@@ -1,0 +1,22 @@
+.body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  width: 100%;
+  height: 6%;
+  display: flex;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+
+.bodyContainer {
+  width: 100%;
+  height: 94%;
+  display: flex;
+}

@@ -1,0 +1,25 @@
+.mainContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+  
+  .leftContainer {
+    width: 25%;
+    height: 100%;
+    background-color: blueviolet;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .heading {
+    width: 100%;
+    text-align: center;
+    padding-top: 1.5%;
+    font-size: larger;
+  }
+  
+  .rightContainer {
+    width: 75%;
+    height: 100%;
+  }
