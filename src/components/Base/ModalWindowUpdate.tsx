@@ -7,7 +7,7 @@ interface UpdateObject {
   updatedValue: string;
 }
 
-const Modal = ({
+const ModalWindowUpdate = ({
   isOpen,
   onClose,
   property,
@@ -139,4 +139,4 @@ const Modal = ({
   );
 };
 
-export default Modal;
+export default ModalWindowUpdate;

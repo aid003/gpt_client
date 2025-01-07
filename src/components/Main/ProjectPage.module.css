@@ -1,3 +1,23 @@
+.blockContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  padding: 1% 6%;
+  border-bottom: 1px solid white;
+}
+
+.blockItem {
+  font-size: large;
+  cursor: pointer;
+  padding: 1px 20px;
+}
+
+.blockItem:hover {
+  background-color: rgb(33, 33, 33);
+  border-radius: 10px;
+}
+
 .heading {
   width: 100%;
   text-align: start;

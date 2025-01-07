@@ -4,7 +4,7 @@ import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { Property } from "@/types";
 import { useState } from "react";
-import Modal from "./ModalWindowUpdate";
+import ModalWindowUpdate from "./ModalWindowUpdate";
 
 const PropertyComponent = ({
   property,
@@ -48,7 +48,7 @@ const PropertyComponent = ({
           )}
         </div>
       </div>
-      <Modal
+      <ModalWindowUpdate
         isOpen={isModalOpen}
         onClose={closeModal}
         property={property}

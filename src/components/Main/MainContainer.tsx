@@ -1,7 +1,7 @@
 "use client";
 import { Suspense, useState } from "react";
 import ProjectsList from "./ProjectsList";
-import ProjectsPage from "./ProjectPage";
+import ProjectPage from "./ProjectPage";
 import styles from "./MainContainer.module.css";
 import ProjectsListSkeleton from "./ProjectsListSkeleton";
 import ProjectsPageSkeleton from "./ProjectsPageSkeleton";
@@ -19,7 +19,7 @@ export default function MainContainer() {
       </div>
       <div className={styles.rightContainer}>
         <Suspense fallback={<ProjectsPageSkeleton />}>
-          {currentProjectId !== null && <ProjectsPage currentProjectId={currentProjectId} />}
+          {currentProjectId !== null && <ProjectPage currentProjectId={currentProjectId} />}
         </Suspense>
       </div>
     </div>
