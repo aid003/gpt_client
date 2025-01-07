@@ -7,7 +7,7 @@
   .leftContainer {
     width: 25%;
     height: 100%;
-    background-color: blueviolet;
+    background-color: rgb(3, 3, 3);
     display: flex;
     flex-direction: column;
   }
@@ -15,8 +15,12 @@
   .heading {
     width: 100%;
     text-align: center;
-    padding-top: 1.5%;
+    padding-top: 4%;
+    padding-bottom: 1%;
     font-size: larger;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 24px;
+    cursor: default;
   }
   
   .rightContainer {

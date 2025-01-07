@@ -11,7 +11,7 @@ export default function Header({ children }: HeaderProps) {
     <html>
       <body className={styles.body}>
         <header className={styles.header}>
-          <p>Header</p>
+          <h1 className={styles.headerText}>Настройка проекта</h1>
         </header>
         <div className={styles.bodyContainer}>{children}</div>
       </body>

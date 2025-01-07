@@ -7,7 +7,7 @@ import ProjectsListSkeleton from "./ProjectsListSkeleton";
 import ProjectsPageSkeleton from "./ProjectsPageSkeleton";
 
 export default function MainContainer() {
-  const [currentProjectId, setCurrentProjectId] = useState<number>(0);
+  const [currentProjectId, setCurrentProjectId] = useState<number | null>(null);
 
   return (
     <div className={styles.mainContainer}>
@@ -19,7 +19,7 @@ export default function MainContainer() {
       </div>
       <div className={styles.rightContainer}>
         <Suspense fallback={<ProjectsPageSkeleton />}>
-          <ProjectsPage currentProjectId={currentProjectId} />
+          {currentProjectId !== null && <ProjectsPage currentProjectId={currentProjectId} />}
         </Suspense>
       </div>
     </div>

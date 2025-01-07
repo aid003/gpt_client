@@ -1,12 +1,13 @@
 export interface Project {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
   description?: string;
-  status: boolean;
+  status?: boolean;
   fallbackMessage?: string;
   gptModel?: string;
   gptTemperature?: string;
   gptTop_p?: string;
+  openaiApiToken?: string;
   isUsingRag?: boolean;
   embeddingModel?: string;
   modelSearch?: string;
@@ -48,4 +49,13 @@ export interface User {
   otherId: string;
   projectId: number;
   timeCreated: string;
+}
+
+export interface Property {
+  id: number;
+  name: string;
+  key: string;
+  type: string;
+  isEditable: boolean;
+  options?: string[];
 }
