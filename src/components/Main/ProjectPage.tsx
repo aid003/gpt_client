@@ -4,8 +4,8 @@ import styles from "./ProjectPage.module.css";
 import { useEffect, useState } from "react";
 import PropertyComponent from "../Base/PropertyComponent";
 import { Block, blocksConfig } from "./blocksConfig";
-
-import { FiCopy } from "react-icons/fi";
+import TelegramSection from "./TelegramSection";
+import RagSection from "./RagSection";
 
 export default function ProjectPage({
   currentProjectId,
@@ -42,15 +42,6 @@ export default function ProjectPage({
     getData(currentProjectId);
   }, [currentProjectId]);
 
-  const textToCopy = `[x2jer3ic9wpdww02]_update_business_connection_id:::${project?.id}`;
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-    } catch (error) {
-      console.error("Ошибка при копировании текста:", error);
-    }
-  };
-
   return (
     <>
       <div className={styles.blockContainer}>
@@ -63,6 +54,7 @@ export default function ProjectPage({
                     backgroundColor: "white",
                     color: "black",
                     borderRadius: "5px",
+                    fontWeight: "bold",
                   }
                 : {}
             }
@@ -98,20 +90,9 @@ export default function ProjectPage({
           </div>
         </div>
       )}
-      {currentBlock.key === "telegram" && (
-        <div className={styles.projectContainer}>
-          <div>
-            <div style={styl.container}>
-              <p style={styl.text}>{textToCopy}</p>
-              <button style={styl.button} onClick={handleCopy}>
-                <FiCopy style={styl.icon} /> Копировать текст
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {currentBlock.key === "telegram" && <TelegramSection project={project} />}
       {currentBlock.key === "rag" && (
-        <div className={styles.projectContainer}>rag</div>
+        <RagSection properties={properties[0]} project={project} />
       )}
       {currentBlock.key === "prompts" && (
         <div className={styles.projectContainer}>prompts</div>
@@ -122,52 +103,3 @@ export default function ProjectPage({
     </>
   );
 }
-
-const styl = {
-  container: {
-    display: "flex",
-    flexDirection: "column" as const,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "20px",
-    border: "2px solid black",
-    borderRadius: "8px",
-    backgroundColor: "white",
-    maxWidth: "700px",
-    margin: "50px auto",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-  },
-  text: {
-    color: "black",
-    fontSize: "16px",
-    marginBottom: "10px",
-    textAlign: "center" as const,
-  },
-  button: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    padding: "10px 20px",
-    backgroundColor: "black",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontSize: "14px",
-    fontWeight: "bold",
-    transition: "background-color 0.3s",
-  },
-  buttonHover: {
-    backgroundColor: "#333", // Тёмно-серый цвет при наведении
-  },
-  icon: {
-    fontSize: "18px",
-  },
-  projectContainer: {
-    padding: "20px",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    backgroundColor: "#f9f9f9",
-    margin: "10px 0",
-  },
-};
