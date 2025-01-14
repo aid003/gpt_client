@@ -1,11 +1,12 @@
 "use client";
 import { Project, Property } from "@/types";
 import styles from "./ProjectPage.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import PropertyComponent from "../Base/PropertyComponent";
 import { Block, blocksConfig } from "./blocksConfig";
 import TelegramSection from "./TelegramSection";
 import RagSection from "./RagSection";
+import PropmtsSection from "./PropmtsSection";
 
 export default function ProjectPage({
   currentProjectId,
@@ -19,33 +20,32 @@ export default function ProjectPage({
     key: "settings",
   });
 
-  useEffect(() => {
-    async function getData(id: number) {
-      const data = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}get-project/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: id }),
-        }
-      );
+  const memoizedBlocks = useMemo(() => blocksConfig, []);
 
-      const properties = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}get-properties/`
-      );
-      setProject(await data.json());
-      setProperties(await properties.json());
-    }
+  const revalidateData = useCallback(async () => {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}get-project/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: currentProjectId }),
+    });
 
-    getData(currentProjectId);
+    const properties = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}get-properties/`
+    );
+    setProject(await data.json());
+    setProperties(await properties.json());
   }, [currentProjectId]);
+
+  useEffect(() => {
+    revalidateData();
+  }, [currentProjectId, revalidateData]);
 
   return (
     <>
       <div className={styles.blockContainer}>
-        {blocksConfig.map((block: Block) => (
+        {memoizedBlocks.map((block: Block) => (
           <p
             className={styles.blockItem}
             style={
@@ -67,35 +67,35 @@ export default function ProjectPage({
           </p>
         ))}
       </div>
+
       {currentBlock.key === "settings" && (
         <div className={styles.projectContainer}>
-          <div>
-            {project &&
-              properties &&
-              properties.length > 0 &&
-              properties.map((property: Property) => {
-                const currentValue = project[property.key as keyof Project];
+          {project &&
+            properties &&
+            properties.length > 0 &&
+            properties.map((property: Property) => {
+              const currentValue = project[property.key as keyof Project];
 
-                return currentValue !== null || undefined ? (
-                  <PropertyComponent
-                    key={property.id}
-                    property={property}
-                    currentValue={currentValue as string}
-                    projectId={project.id ?? 0}
-                  />
-                ) : (
-                  ""
-                );
-              })}
-          </div>
+              if (currentValue == null) return null;
+
+              return (
+                <PropertyComponent
+                  key={property.id}
+                  property={property}
+                  currentValue={currentValue as string}
+                  projectId={project.id ?? 0}
+                />
+              );
+            })}
         </div>
       )}
       {currentBlock.key === "telegram" && <TelegramSection project={project} />}
-      {currentBlock.key === "rag" && (
-        <RagSection properties={properties[0]} project={project} />
-      )}
-      {currentBlock.key === "prompts" && (
-        <div className={styles.projectContainer}>prompts</div>
+      {currentBlock.key === "rag" && <RagSection project={project} />}
+      {currentBlock.key === "prompts" && project && (
+        <PropmtsSection
+          project={project}
+          revalidateData={revalidateData}
+        ></PropmtsSection>
       )}
       {currentBlock.key === "users" && (
         <div className={styles.projectContainer}>users</div>

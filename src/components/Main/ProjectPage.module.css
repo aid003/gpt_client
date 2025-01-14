@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   /* align-items: center; */
-  padding: 1% 6%;
+  padding: 1.25% 3%;
   border-bottom: 1px solid white;
 }
 
@@ -30,7 +30,7 @@
 
 .projectContainer {
   width: 100%;
-  max-height: 87vh;
+  max-height: 90%;
   overflow-y: auto;
   box-sizing: border-box;
   padding-left: 3%;
