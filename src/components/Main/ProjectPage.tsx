@@ -84,13 +84,16 @@ export default function ProjectPage({
                   property={property}
                   currentValue={currentValue as string}
                   projectId={project.id ?? 0}
+                  revalidateData={revalidateData}
                 />
               );
             })}
         </div>
       )}
       {currentBlock.key === "telegram" && <TelegramSection project={project} />}
-      {currentBlock.key === "rag" && <RagSection project={project} />}
+      {currentBlock.key === "rag" && (
+        <RagSection project={project} revalidateData={revalidateData} />
+      )}
       {currentBlock.key === "prompts" && project && (
         <PropmtsSection
           project={project}

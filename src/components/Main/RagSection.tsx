@@ -3,7 +3,13 @@ import styles from "./RagSection.module.css";
 import { FaFileAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
-const RagSection = ({ project }: { project: Project | null }) => {
+const RagSection = ({
+  project,
+  revalidateData,
+}: {
+  project: Project | null;
+  revalidateData: () => void;
+}) => {
   const [collectionData, setCollectionData] = useState<{
     name: string;
     type: string;
@@ -44,10 +50,11 @@ const RagSection = ({ project }: { project: Project | null }) => {
       const data: Project = await res.json();
 
       setCurrentCollections(data.vectorCollections);
+      revalidateData();
     }
 
     getVectorCollections();
-  }, [collectionData?.type, project?.id, collectionForDelete]);
+  }, [collectionData?.type, project?.id, collectionForDelete, revalidateData]);
 
   async function updateRagStatus() {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}update-properties/`, {
@@ -61,6 +68,7 @@ const RagSection = ({ project }: { project: Project | null }) => {
         changeValue: !Boolean(project?.isUsingRag),
       }),
     });
+    revalidateData();
   }
 
   async function createVectorCollections() {
@@ -79,6 +87,7 @@ const RagSection = ({ project }: { project: Project | null }) => {
     });
 
     setCollectionData(null);
+    revalidateData();
   }
 
   async function deleteVectorCollections() {
@@ -94,6 +103,7 @@ const RagSection = ({ project }: { project: Project | null }) => {
     });
 
     setCollectionForDelete(null);
+    revalidateData();
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

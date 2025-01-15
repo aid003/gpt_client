@@ -13,12 +13,14 @@ const ModalWindowUpdate = ({
   property,
   currentValue,
   projectId,
+  revalidateData,
 }: {
   isOpen: boolean;
   onClose: () => void;
   property: Property;
   currentValue: string;
   projectId: number;
+  revalidateData: () => void;
 }) => {
   const [value, setValue] = useState<UpdateObject | null>(null);
 
@@ -37,6 +39,7 @@ const ModalWindowUpdate = ({
       });
 
       onClose();
+      revalidateData();
     } catch (error) {
       console.log(error);
     }
@@ -54,6 +57,20 @@ const ModalWindowUpdate = ({
           {(() => {
             switch (property.type) {
               case "string":
+                return (
+                  <input
+                    className={styles.text}
+                    defaultValue={currentValue}
+                    onChange={(e) => {
+                      setValue({
+                        key: property.key,
+                        updatedValue: e.target.value.trim(),
+                      });
+                    }}
+                  />
+                );
+
+              case "text":
                 return (
                   <textarea
                     className={styles.text}
@@ -92,8 +109,9 @@ const ModalWindowUpdate = ({
                         onChange={(e) => {
                           setValue({
                             key: property.key,
-                            updatedValue: e.target.checked.toString(),
+                            updatedValue: Boolean(!currentValue).toString(),
                           });
+                          console.log(e.target.value);
                         }}
                       />
                       {property.name}

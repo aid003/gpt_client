@@ -17,6 +17,10 @@ const PromptsSection = ({
   const [currentTypeForCreate, setCurrentTypeForCreate] = useState<string>("");
   const [currentPromptForCreate, setCurrentPromptForCreate] =
     useState<string>("");
+  const [currentPromptForDelete, setCurrentPromptForDelete] = useState<{
+    id: number;
+    type: string;
+  } | null>(null);
 
   const promptTypes = useMemo(
     () => Array.from(new Set(project.prompts.map((prompt) => prompt.type))),
@@ -81,6 +85,28 @@ const PromptsSection = ({
       alert("Промпт успешно создан!");
     } catch {
       alert("Ошибка при создании промпта");
+    }
+  };
+
+  const deletePrompt = async () => {
+    if (!currentPromptForDelete) return;
+
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}delete-prompt/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          projectId: project?.id,
+          id: currentPromptForDelete.id,
+        }),
+      });
+      setCurrentPromptForDelete(null);
+      revalidateData();
+      alert("Успешно удален");
+    } catch {
+      alert("Ошибка удаления");
     }
   };
 
@@ -159,6 +185,39 @@ const PromptsSection = ({
                 </button>
               </div>
             )}
+          </div>
+        )}
+      </div>
+      <div className={styles.updateContainer}>
+        <div className={styles.selectTypeContainer}>
+          <p className={styles.heading}>Выбери тип промпта для удаления</p>
+          <select
+            className={styles.select}
+            onChange={(e) => {
+              const selectedType = e.target.value;
+              const foundPrompt = project.prompts.find(
+                (item) => item.type === selectedType
+              );
+              setCurrentPromptForDelete(
+                foundPrompt || { id: 0, type: selectedType }
+              );
+            }}
+          >
+            <option value="">Тип промпта</option>
+            {promptTypes.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+        </div>
+        {currentPromptForDelete && currentPromptForDelete.type && (
+          <div className={styles.updatePromptContainer}>
+            <div className={styles.inputContainer}>
+              <button onClick={deletePrompt} className={styles.button}>
+                Удалить
+              </button>
+            </div>
           </div>
         )}
       </div>

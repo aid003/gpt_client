@@ -10,10 +10,12 @@ const PropertyComponent = ({
   property,
   currentValue,
   projectId,
+  revalidateData,
 }: {
   property: Property;
   currentValue: string;
   projectId: number;
+  revalidateData: () => void;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const openModal = () => setIsModalOpen(true);
@@ -54,6 +56,7 @@ const PropertyComponent = ({
         property={property}
         currentValue={currentValue}
         projectId={projectId}
+        revalidateData={revalidateData}
       />
     </>
   );
